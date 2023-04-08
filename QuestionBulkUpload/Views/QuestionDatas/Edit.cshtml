@@ -1,0 +1,74 @@
+﻿@model QuestionBulkUpload.Models.QuestionData
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>QuestionData</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Direction" class="control-label"></label>
+                <input asp-for="Direction" class="form-control" />
+                <span asp-validation-for="Direction" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Summary" class="control-label"></label>
+                <input asp-for="Summary" class="form-control" />
+                <span asp-validation-for="Summary" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QuestionS" class="control-label"></label>
+                <input asp-for="QuestionS" class="form-control" />
+                <span asp-validation-for="QuestionS" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Explaination" class="control-label"></label>
+                <input asp-for="Explaination" class="form-control" />
+                <span asp-validation-for="Explaination" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Option1" class="control-label"></label>
+                <input asp-for="Option1" class="form-control" />
+                <span asp-validation-for="Option1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Option2" class="control-label"></label>
+                <input asp-for="Option2" class="form-control" />
+                <span asp-validation-for="Option2" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Option3" class="control-label"></label>
+                <input asp-for="Option3" class="form-control" />
+                <span asp-validation-for="Option3" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Option4" class="control-label"></label>
+                <input asp-for="Option4" class="form-control" />
+                <span asp-validation-for="Option4" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Option5" class="control-label"></label>
+                <input asp-for="Option5" class="form-control" />
+                <span asp-validation-for="Option5" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
