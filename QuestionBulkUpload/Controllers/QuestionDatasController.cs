@@ -66,9 +66,6 @@ namespace QuestionBulkUpload.Controllers
             foreach (var item in list)
             {
 
-                Debug.WriteLine(item +"Emputy");
-
-
                 if(item.Contains("@qt"))
                 { 
                 QuestionData question = new QuestionData();
