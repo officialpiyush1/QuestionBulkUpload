@@ -1,12 +1,16 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Packaging.Signing;
 using QuestionBulkUpload.Data;
 using QuestionBulkUpload.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace QuestionBulkUpload.Controllers
 {
@@ -51,21 +55,101 @@ namespace QuestionBulkUpload.Controllers
             return View();
         }
 
-        // POST: QuestionDatas/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Direction,Summary,QuestionS,Explaination,Option1,Option2,Option3,Option4,Option5")] QuestionData questionData)
+        public async Task<ActionResult<string[]>> Create(string Direction)
         {
-            if (ModelState.IsValid)
+
+
+            string[] list = Direction.Split("@mq");
+            List<QuestionData> questions = new List<QuestionData>();
+            foreach (var item in list)
             {
-                _context.Add(questionData);
+
+                Debug.WriteLine(item +"Emputy");
+
+
+                if(item.Contains("@qt"))
+                { 
+                QuestionData question = new QuestionData();
+                var itemCollect = item.Split('@');
+                var order = 0;
+                foreach (var items in itemCollect)
+                {
+                    if (items.StartsWith("srt")) {
+                        order = Convert.ToInt32(items.Substring(3, 1).Trim());
+                    }
+                    else if (items.StartsWith("qt")) {
+                        question.QuestionS = items.Replace("qt", "").Trim();
+                    }
+                    else if (items.StartsWith("dt"))
+                    {
+                        question.Direction = items.Replace("dt", "").Trim();
+                    }
+                    else if (items.StartsWith("st"))
+                    {
+                        question.Summary = items.Replace("st", "").Trim();
+                    }
+                    else if (items.StartsWith("et"))
+                    {
+                        question.Explaination = items.Replace("et", "").Trim();
+                    }
+                    else if (items.StartsWith("oa"))
+                    {
+                        question.Option1 = items.Replace("oa", "").Trim();
+                    }
+                    else if (items.StartsWith("ob"))
+                    {
+                        question.Option2 = items.Replace("ob", "").Trim();
+                    }
+                    else if (items.StartsWith("oc"))
+                    {
+                        question.Option3 = items.Replace("oc", "").Trim();
+                    }
+                    else if (items.StartsWith("od"))
+                    {
+                        question.Option4 = items.Replace("od", "").Trim();
+                    }
+                    else if (items.StartsWith("oe"))
+                    {
+                        question.Option5 = items.Replace("oe", "").Trim();
+                    }
+
+
+                }
+                if (order == 0)
+                {
+                    questions.Add(question);
+                }
+                else {
+                    questions.Insert(order-1, question);
+                }
+            } }
+            if (questions.Count > 0) {
+                _context.AddRange(questions);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(questionData);
+            
+            return View(Direction) ;
         }
+
+
+        // POST: QuestionDatas/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //    [HttpPost]
+        //      [ValidateAntiForgeryToken]
+        //  public async Task<IActionResult> Create(string String)
+        //{
+        //  if (ModelState.IsValid)
+        // {
+        //   _context.Add(questionData);
+        // await _context.SaveChangesAsync();
+        //return RedirectToAction(nameof(Index));
+        // }
+        //  return View();
+        //}
 
         // GET: QuestionDatas/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -99,6 +183,7 @@ namespace QuestionBulkUpload.Controllers
             {
                 try
                 {
+
                     _context.Update(questionData);
                     await _context.SaveChangesAsync();
                 }
